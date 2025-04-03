@@ -1,0 +1,10 @@
+@model IEnumerable<Movie>
+
+<div class="container mt-4">
+    <div class="row row-cols-2 row-cols-md-6 g-4">
+        @foreach (var movie in Model)
+        {
+            @await Html.PartialAsync("_CardPartial", movie)
+        }
+    </div>
+</div>

@@ -8,18 +8,15 @@ namespace MovieMVCApp.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IMovieService _movieService;
 
     public HomeController(ILogger<HomeController> logger, IMovieService movieService)
     {
         _logger = logger;
-        _movieService = movieService;
     }
 
     public IActionResult Index()
     {
-        var data = _movieService.GetAllMovies();
-        return View(data);
+        return View();
     }
 
     public IActionResult Privacy()

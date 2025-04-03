@@ -13,8 +13,23 @@ public class MovieService: IMovieService
         this.movieRepository = movieRepository;
     }
     
-    public IEnumerable<Movie> GetAllMovies()
+    public async Task<IEnumerable<Movie>> GetAllMoviesAsync()
     {
-        return movieRepository.GetAll();
+        return await movieRepository.GetAllAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetHighestGrossingMoviesAsync()
+    {
+        return await movieRepository.GetHighestGrossingMoviesAsync();
+    }
+
+    public async Task<Movie> GetMovieDetailsAsync(int id)
+    {
+        return await movieRepository.GetMovieByIdAsync(id);
+    }
+
+    public async Task<decimal> GetMovieRatingAsync(int id)
+    {
+        return await movieRepository.GetAverageRatingByIdAsync(id);
     }
 }

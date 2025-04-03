@@ -10,9 +10,9 @@ public class MovieDbContext: DbContext
         
     }
 
-    public DbSet<Cast> Casts { get; set; }
+    public DbSet<Cast?> Casts { get; set; }
     public DbSet<Genre> Genres { get; set; }
-    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Movie?> Movies { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<MovieGenre> MovieGenres { get; set; }

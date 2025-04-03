@@ -1,42 +1,44 @@
 using ApplicationCore.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
 
 public class BaseRepository<T>: IRepository<T> where T : class
 {
-    private readonly MovieDbContext movieDbContext;
+    protected readonly MovieDbContext movieDbContext;
     
     public BaseRepository(MovieDbContext movieDbContext)
     {
         this.movieDbContext = movieDbContext;
     }
-    public int Insert(T entity)
+    
+    public async Task<int> InsertAsync(T entity)
     {
         movieDbContext.Set<T>().Add(entity);
-        return movieDbContext.SaveChanges();
+        return await movieDbContext.SaveChangesAsync();
     }
 
-    public int Update(T entity)
+    public async Task<int> UpdateAsync(T entity)
     {
         movieDbContext.Set<T>().Update(entity);
-        return movieDbContext.SaveChanges();
+        return await movieDbContext.SaveChangesAsync();
     }
 
-    public int Delete(int id)
+    public async Task<int> DeleteAsync(int id)
     {
-        var item = GetById(id);
+        var item = GetByIdAsync(id).Result;
         movieDbContext.Set<T>().Remove(item);
-        return movieDbContext.SaveChanges();
+        return await movieDbContext.SaveChangesAsync();
     }
 
-    public IEnumerable<T> GetAll()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return movieDbContext.Set<T>();
+        return await movieDbContext.Set<T>().ToListAsync();
     }
 
-    public T GetById(int id)
+    public virtual async Task<T?> GetByIdAsync(int id)
     {
-        return movieDbContext.Set<T>().Find(id);
+        return await movieDbContext.Set<T>().FindAsync(id);
     }
 }
