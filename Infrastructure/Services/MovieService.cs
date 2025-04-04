@@ -1,5 +1,6 @@
 using ApplicationCore.Contracts.Services;
 using ApplicationCore.Entities;
+using ApplicationCore.Models;
 using ApplicationCore.Repositories;
 
 namespace Infrastructure.Services;
@@ -23,7 +24,7 @@ public class MovieService: IMovieService
         return await movieRepository.GetHighestGrossingMoviesAsync();
     }
 
-    public async Task<Movie> GetMovieDetailsAsync(int id)
+    public async Task<Movie?> GetMovieDetailsAsync(int id)
     {
         return await movieRepository.GetMovieByIdAsync(id);
     }
@@ -31,5 +32,10 @@ public class MovieService: IMovieService
     public async Task<decimal> GetMovieRatingAsync(int id)
     {
         return await movieRepository.GetAverageRatingByIdAsync(id);
+    }
+
+    public async Task<PaginatedResultSet<Movie>> GetMoviesByGenreAsync(int genreId, int pageSize, int pageNumber)
+    {
+        return await movieRepository.GetMoviesByGenreAsync(genreId, pageSize, pageNumber);
     }
 }

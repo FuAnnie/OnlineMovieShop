@@ -3,6 +3,7 @@ using ApplicationCore.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ApplicationCore.Models;
 
 namespace Infrastructure.Repositories;
 
@@ -19,7 +20,7 @@ public class MovieRepository: BaseRepository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
-    public async Task<Movie> GetMovieByIdAsync(int id)
+    public async Task<Movie?> GetMovieByIdAsync(int id)
     {
         return await movieDbContext.Movies
             .Include(m => m.MovieGenres)
@@ -40,5 +41,20 @@ public class MovieRepository: BaseRepository<Movie>, IMovieRepository
             .ToListAsync();
         
         return ratings.Any() ? ratings.Average() : 0;
+    }
+
+    public async Task<PaginatedResultSet<Movie>> GetMoviesByGenreAsync(int genreId, int pageSize, int pageNumber)
+    {
+        var totalItems = await movieDbContext.Movies.CountAsync();
+        
+        var movies = await movieDbContext.MovieGenres
+            .Where(mg => mg.GenreId == genreId)
+            .Include(mg => mg.Movie)
+            .Select(mg => mg.Movie)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        
+        return new PaginatedResultSet<Movie>(movies, totalItems, pageNumber, pageSize);
     }
 }

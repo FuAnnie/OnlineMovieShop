@@ -21,6 +21,7 @@ public class CastController : Controller
     public async Task<IActionResult> Details(int id)
     {
         var data = await castService.GetCastDetailsAsync(id);
+        
         return View(data);
     }
 }
