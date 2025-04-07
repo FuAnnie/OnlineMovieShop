@@ -2,6 +2,8 @@
 
 <div class="col">
     <div class="card shadow-sm">
-        <img src="@Model.PosterUrl" class="card-img-top" alt="@Model.Title">
+        <a asp-action="Details" asp-route-id="@Model.Id">
+            <img src="@Model.PosterUrl" class="card-img-top" alt="@Model.Title">
+        </a>
     </div>
 </div>
